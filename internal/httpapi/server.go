@@ -39,7 +39,7 @@ func New(hub *room.Hub, origins []string, log *slog.Logger) http.Handler {
 	mux.HandleFunc("POST /api/rooms", s.createRoom)
 	mux.HandleFunc("GET /api/rooms/{code}", s.getRoom)
 	mux.HandleFunc("GET /ws/rooms/{code}", s.roomSocket)
-	return s.withCORS(mux)
+	return s.withRateLimit(s.withCORS(mux))
 }
 
 func (s *Server) health(w http.ResponseWriter, _ *http.Request) {
